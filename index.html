@@ -3,153 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tower Defense Game</title>
+    <title>To-Do List Application</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Main Game Container -->
-    <div class="game-container">
-        <!-- Header with Stats -->
-        <div class="game-header">
-            <div class="header-left">
-                <h1>🎮 TOWER DEFENSE</h1>
-            </div>
-            <div class="header-stats">
-                <div class="stat-box">
-                    <span class="stat-label">GOLD</span>
-                    <span class="stat-value" id="goldDisplay">500</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">WAVE</span>
-                    <span class="stat-value" id="waveDisplay">0</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">LIVES</span>
-                    <span class="stat-value" id="livesDisplay">20</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">ENEMIES</span>
-                    <span class="stat-value" id="enemyDisplay">0</span>
-                </div>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">✓ My Tasks</h1>
+                <p class="app-subtitle">Organize your day, one task at a time</p>
             </div>
         </div>
 
-        <!-- Main Game Area -->
-        <div class="game-main">
-            <!-- Canvas Container -->
-            <div class="canvas-container">
-                <canvas id="gameCanvas" width="800" height="600"></canvas>
-                <div class="pause-overlay" id="pauseOverlay">
-                    <div class="pause-text">⏸ PAUSED</div>
-                </div>
-            </div>
+        <!-- Main Content -->
+        <div class="app-main">
+            <!-- Sidebar -->
+            <aside class="app-sidebar">
+                <nav class="nav-menu">
+                    <h3 class="nav-title">Views</h3>
+                    <button class="nav-item active" data-view="all">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-label">All Tasks</span>
+                        <span class="nav-count" id="countAll">0</span>
+                    </button>
+                    <button class="nav-item" data-view="active">
+                        <span class="nav-icon">⚡</span>
+                        <span class="nav-label">Active</span>
+                        <span class="nav-count" id="countActive">0</span>
+                    </button>
+                    <button class="nav-item" data-view="completed">
+                        <span class="nav-icon">✓</span>
+                        <span class="nav-label">Completed</span>
+                        <span class="nav-count" id="countCompleted">0</span>
+                    </button>
+                    <button class="nav-item" data-view="today">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-label">Today</span>
+                        <span class="nav-count" id="countToday">0</span>
+                    </button>
+                </nav>
 
-            <!-- Sidebar Controls -->
-            <div class="game-sidebar">
-                <!-- Difficulty Selection -->
-                <div class="sidebar-section">
-                    <h3>⚙️ Difficulty</h3>
-                    <div class="difficulty-group">
-                        <button class="btn-difficulty active" data-difficulty="easy">EASY</button>
-                        <button class="btn-difficulty" data-difficulty="normal">NORMAL</button>
-                        <button class="btn-difficulty" data-difficulty="hard">HARD</button>
+                <div class="sidebar-divider"></div>
+
+                <nav class="categories-menu">
+                    <h3 class="nav-title">Categories</h3>
+                    <div class="categories-list" id="categoriesList">
+                        <!-- Categories will be populated here -->
                     </div>
-                </div>
+                </nav>
 
-                <!-- Tower Selection -->
-                <div class="sidebar-section">
-                    <h3>🏗️ Build Towers</h3>
-                    
-                    <!-- Archer Tower -->
-                    <button class="tower-btn" id="archerBtn">
-                        <div class="tower-icon">🏹</div>
-                        <div class="tower-name">Archer Tower</div>
-                        <div class="tower-cost">Cost: 100</div>
-                        <div class="tower-desc">Balanced attacker</div>
+                <div class="sidebar-divider"></div>
+
+                <div class="sidebar-actions">
+                    <button class="btn-secondary" id="clearCompleted">
+                        <span>🗑️</span> Clear Completed
                     </button>
-
-                    <!-- Laser Tower -->
-                    <button class="tower-btn" id="laserBtn">
-                        <div class="tower-icon">⚡</div>
-                        <div class="tower-name">Laser Tower</div>
-                        <div class="tower-cost">Cost: 150</div>
-                        <div class="tower-desc">High damage output</div>
+                    <button class="btn-secondary" id="exportBtn">
+                        <span>⬇️</span> Export Tasks
                     </button>
-
-                    <!-- Ice Tower -->
-                    <button class="tower-btn" id="iceBtn">
-                        <div class="tower-icon">❄️</div>
-                        <div class="tower-name">Ice Tower</div>
-                        <div class="tower-cost">Cost: 120</div>
-                        <div class="tower-desc">Slows enemies 50%</div>
+                    <button class="btn-secondary" id="importBtn">
+                        <span>⬆️</span> Import Tasks
                     </button>
                 </div>
+            </aside>
 
-                <!-- Game Controls -->
-                <div class="sidebar-section">
-                    <h3>🎮 Controls</h3>
-                    <button class="btn-control btn-primary" id="startWaveBtn">
-                        <span class="btn-icon">▶️</span> Start Wave
-                    </button>
-                    <button class="btn-control" id="pauseBtn">
-                        <span class="btn-icon">⏸</span> Pause
-                    </button>
-                    <button class="btn-control" id="restartBtn">
-                        <span class="btn-icon">🔄</span> Restart
-                    </button>
-                </div>
-
-                <!-- Tower Stats & Management -->
-                <div class="sidebar-section">
-                    <h3>📊 Tower Stats</h3>
-                    <div id="towerStats" style="font-size: 12px; color: #aaa; line-height: 1.6;">
-                        <div style="opacity: 0.6; text-align: center;">Click a tower to view stats</div>
+            <!-- Main Content Area -->
+            <main class="app-content">
+                <!-- Input Section -->
+                <section class="input-section">
+                    <div class="input-container">
+                        <input 
+                            type="text" 
+                            id="taskInput" 
+                            class="task-input" 
+                            placeholder="Add a new task..."
+                            autocomplete="off"
+                        >
+                        <button class="btn-add" id="addBtn" title="Add task (Enter or Click)">
+                            <span>➕</span> Add
+                        </button>
                     </div>
-                    <div style="margin-top: 10px; font-size: 11px; color: #888;" id="upgradeMessage"></div>
-                    <div class="stat-bar-container">
-                        <button class="btn-control" id="upgradeBtn" style="margin-bottom: 0;">⬆️ Upgrade</button>
-                        <button class="btn-control" id="sellBtn" style="margin-bottom: 0; background: linear-gradient(135deg, rgba(244, 67, 54, 0.2) 0%, rgba(244, 67, 54, 0.1) 100%); border-color: #f44336; color: #ff8a80;">💰 Sell</button>
-                    </div>
-                </div>
 
-                <!-- Tips Section -->
-                <div class="sidebar-section">
-                    <h3>💡 Tips</h3>
-                    <ul class="tips-section">
-                        <li>Click a tower type to select it</li>
-                        <li>Click the grid to place towers</li>
-                        <li>Select towers to upgrade them</li>
-                        <li>Ice slows enemies 50% for 3s</li>
-                        <li>Each wave increases enemy difficulty</li>
-                        <li>Sell towers for 75% refund</li>
-                        <li>Reach wave 100 to win!</li>
-                    </ul>
-                </div>
-            </div>
+                    <!-- Advanced Options -->
+                    <div class="advanced-options">
+                        <div class="option-group">
+                            <label for="categorySelect">Category:</label>
+                            <select id="categorySelect" class="select-input">
+                                <option value="work">Work</option>
+                                <option value="personal">Personal</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="prioritySelect">Priority:</label>
+                            <select id="prioritySelect" class="select-input">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="dueDateInput">Due Date:</label>
+                            <input type="date" id="dueDateInput" class="date-input">
+                        </div>
+
+                        <button class="btn-secondary" id="toggleOptionsBtn">
+                            <span>⚙️</span> More Options
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Stats Section -->
+                <section class="stats-section">
+                    <div class="stat-item">
+                        <div class="stat-number" id="statTotal">0</div>
+                        <div class="stat-label">Total Tasks</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="statActive">0</div>
+                        <div class="stat-label">Active</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="statCompleted">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="statProgress">0%</div>
+                        <div class="stat-label">Progress</div>
+                    </div>
+                </section>
+
+                <!-- Filters and Sorting -->
+                <section class="filters-section">
+                    <div class="filter-group">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="search-input" 
+                            placeholder="🔍 Search tasks..."
+                            autocomplete="off"
+                        >
+                        <select id="sortSelect" class="select-input">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="priority">Priority</option>
+                            <option value="alphabetical">A-Z</option>
+                            <option value="due-date">Due Date</option>
+                        </select>
+                        <select id="filterPriority" class="select-input">
+                            <option value="">All Priorities</option>
+                            <option value="high">High Priority</option>
+                            <option value="medium">Medium Priority</option>
+                            <option value="low">Low Priority</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Task List -->
+                <section class="tasks-section">
+                    <div class="tasks-container" id="tasksContainer">
+                        <!-- Tasks will be rendered here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div class="empty-state" id="emptyState">
+                        <div class="empty-icon">📝</div>
+                        <h3>No tasks yet</h3>
+                        <p>Create your first task to get started!</p>
+                    </div>
+                </section>
+            </main>
         </div>
     </div>
 
-    <!-- Game Over Modal -->
-    <div class="modal" id="gameOverModal">
-        <div class="modal-content">
-            <h2>💀 GAME OVER</h2>
-            <p id="gameOverStats">Wave: 5 | Gold Earned: 1250</p>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 20px;">Your base has been overrun by enemies!</p>
-            <button class="btn-modal" onclick="location.reload()">Play Again 🎮</button>
-        </div>
-    </div>
+    <!-- Hidden import input -->
+    <input type="file" id="importFile" accept=".json" style="display: none;">
 
-    <!-- Victory Modal -->
-    <div class="modal" id="victoryModal">
-        <div class="modal-content">
-            <h2>🏆 VICTORY!</h2>
-            <p id="victoryStats">Wave: 100 | Gold Earned: 50000</p>
-            <p style="font-size: 12px; color: #aaa; margin-bottom: 20px;">You've survived 100 waves! Outstanding defense!</p>
-            <button class="btn-modal" onclick="location.reload()">Play Again 🎮</button>
-        </div>
-    </div>
-
-    <!-- Game Script -->
-    <script src="game.js"></script>
+    <!-- Script -->
+    <script src="app.js"></script>
 </body>
 </html>
